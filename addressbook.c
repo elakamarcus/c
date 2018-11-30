@@ -1,4 +1,11 @@
-/* Contact list */
+/* Address book
+
+todo:
+- finish remove function
+- function to enumerate no. contacts
+or use control var
+
+*/
 
 #include <stdio.h>
 #include <string.h>
@@ -15,14 +22,16 @@ struct contact {
 
 
 void menu();
-void createContact( struct contact *ctptr);
+struct contact createContact( void );
 void removeContact( struct contact *ctptr);
 int getNumContacts( struct contact *contacts[MAXCONTACTS]);
+void printcontact( struct contact *b );
 
 int main() {
 
     struct contact contacts[MAXCONTACTS] = {0};
-    int i;
+    int i,count;
+    count = 0;
     do {
         menu();
         printf("\nInput your selection: ");
@@ -33,10 +42,11 @@ int main() {
                 2. which is next available.
                 3. consider send the whole array.
                  */
-            createContact(&contacts[0]);
+           contacts[count] = createContact();
+           count += 1;
         }
         else if(i==2){
-            listContacts(&contacts);
+            printcontact(&contacts[count]);
         }
         else if(i==3){
             printf("Which contact to remove?\n");
@@ -60,49 +70,34 @@ void menu(){
 
 }
 
-void createContact( struct contact *ctptr) {
+struct contact createContact( void ) {
+    struct contact ctptr;
     /* first find the first empty contact, or quit if the array is full */
-    int max = getNumContacts(ctptr);
-    if(max == MAXCONTACTS){
-        printf("Contact list full.\n");
-        return -1;
-    }
+    int max = 0;
     getchar( );
-    printf("Enter the first name:");
-    fgets(ctptr[max].firstname, 50, stdin);
-    ctptr[max].firstname[strlen(ctptr[max].firstname) - 1] = '\0';
-    printf("Enter last name:");
-    fgets(ctptr[max].lastname, 50, stdin);
-    ctptr[max].lastname[strlen(ctptr[max].lastname) - 1] = '\0';
-    printf("Enter phone number:");
-    fgets(ctptr[max].phone, 15, stdin);
-    ctptr[max].phone[strlen(ctptr[max].phone) - 1] = '\0';
-    printf("Enter email address:");
-    fgets(ctptr[max].email, 20, stdin);
-    ctptr[max].email[strlen(ctptr[max].email) - 1] = '\0';
-    printf("Enter priority (1-100):");
-    scanf("%d", &ctptr[max].priority);
+    printf("Enter the first name: ");
+    fgets(ctptr.firstname, 50, stdin);
+    ctptr.firstname[strlen(ctptr.firstname) - 1] = '\0';
+    printf("Enter last name: ");
+    fgets(ctptr.lastname, 50, stdin);
+    ctptr.lastname[strlen(ctptr.lastname) - 1] = '\0';
+    printf("Enter phone number: ");
+    fgets(ctptr.phone, 15, stdin);
+    ctptr.phone[strlen(ctptr.phone) - 1] = '\0';
+    printf("Enter email address: ");
+    fgets(ctptr.email, 20, stdin);
+    ctptr.email[strlen(ctptr.email) - 1] = '\0';
+    printf("Enter priority (1-100): ");
+    scanf("%d", &ctptr.priority);
+
+    return ctptr;
 }
 
-void listContacts( struct contact *ctsptr[MAXCONTACTS]){
-/*    printf("Not yet implemented.\n");
-    int max = getNumContacts(ctsptr);
-    for(int i=0;i<=max;i++){
-        printf("Contact: %d\n", i+1);
-        printf("\t%s\n", (*ctsptr[i]).firstname);
-        printf("\t%s\n", (*ctsptr[i]).lastname);
-        printf("\t%s\n", (*ctsptr[i]).phone);
-        printf("\t%s\n", (*ctsptr[i]).email);
-        printf("\t%d\n", (*ctsptr[i]).priority);
-    }
-*/
-    int i = 0;
-    printf("Contact: %d\n", i+1);
-    printf("\t%s\n", (*ctsptr[i]).firstname);
-    printf("\t%s\n", (*ctsptr[i]).lastname);
-    printf("\t%s\n", (*ctsptr[i]).phone);
-    printf("\t%s\n", (*ctsptr[i]).email);
-    printf("\t%d\n", (*ctsptr[i]).priority);
+void printcontact ( struct contact *b ){
+    printf("Contact: %s, %s\n", b->lastname, b->firstname );
+    printf("\tPhone: %s\n", b->phone); // pointer operator
+    printf("\tEmail: %s\n", b->email);
+    printf("\tPrio: %d\n", b->priority);
 
 }
 
@@ -114,7 +109,6 @@ void removeContact( struct contact *ctptr){
 int getNumContacts( struct contact *contacts[MAXCONTACTS]) {
     int max = MAXCONTACTS;
     int b=0; // the 'length of array'
-
 
     return b;
 }
