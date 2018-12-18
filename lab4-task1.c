@@ -40,10 +40,10 @@ int main()
 	/* TODO: initialize the world by hard-coded function initialize_world()
 	 in lifegame.c*/
 	initialize_world();
-	
+
 	/* Print the first world after initialize, a glider.. */
 	output_world();
-	
+    printf("Press enter for next generation.\n");
 	/* evolutions*/
 
 	for (n = 0; n < NUM_GENERATIONS; n++) {
@@ -59,7 +59,6 @@ int main()
 		getchar();
 	}
 
-
 	return 0;
 }
 
@@ -73,12 +72,9 @@ void next_generation(void) {
 	   /* loop through each coordinate to get next state for each.
 	   set x and y to loop through each point
 	   */
-	   int WIDTH = get_world_width();
-	   int HEIGHT = get_world_height();
-
 	   int x, y;
-	   for(x = 1; x < WIDTH; x++){
-		   for(y = 1; y < HEIGHT; y++){
+	   for(x = 0; x < WORLDWIDTH; x++){
+		   for(y = 0; y < WORLDHEIGHT; y++){
 			   get_next_state(x, y);
 		   }
 	   }
@@ -89,7 +85,7 @@ void next_generation(void) {
 
 int get_next_state(int x, int y) {
 	/* TODO: for the specified cell, compute the state in
-	   the next generation using the rules
+	   the next generation using the rules: done
 	   /* 2018-12-12
 	   	1. Any live cell with fewer than two live neighbors dies, as if by underpopulation.
 		2. Any live cell with two or three live neighbors lives on to the next generation.
@@ -103,9 +99,10 @@ int get_next_state(int x, int y) {
 	// 2018-12-12
 	//get the current state
 	int current_state = get_cell_state(x, y);
-	int proximity;
+	int proximity; // hold the sum of alive neighbors
 	proximity = num_neighbors(x, y);
 
+	/* if-elseif following the listed rules above */
 	if(current_state == 1 && proximity <2 ){
 		set_dead(x, y);
 	}
@@ -125,7 +122,7 @@ int get_next_state(int x, int y) {
 
 int num_neighbors(int x, int y) {
 	/* TODO: for the specified cell, return the number of
-	   neighbors that are ALIVE
+	   neighbors that are ALIVE: done
 
 	   Use get_cell_state(x,y) */
 	int sum = 0;
